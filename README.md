@@ -58,6 +58,22 @@ Move into the project directory:
 cd weather-api-fetcher
 ```
 
+Create virtual environment:
+```bash
+python -m venv .venv
+```
+
+Activate virtual environment 
+
+- **Linux/MacOS:**
+```bash
+source .venv/bin/activate
+```
+- **Windows:**
+```cmd
+.venv\Scripts\activate
+```
+
 Install dependencies:
 
 ```bash
