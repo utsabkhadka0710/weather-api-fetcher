@@ -1,7 +1,10 @@
 __pycache__/
 *.pyc
 
-logs/weather_fetcher.log
-data/weather_data.csv
+logs/*
+data/*
+
+!logs/.gitkeep
+!data/.gitkeep
 
 .env
