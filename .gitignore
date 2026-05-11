@@ -1,7 +1,7 @@
 __pycache__/
 *.pyc
 
-logs/
-data/
+logs/weather_fetcher.log
+data/weather_data.csv
 
 .env
