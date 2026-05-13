@@ -20,7 +20,7 @@ file_handler = RotatingFileHandler(
 
 # logging format
 formatter = logging.Formatter(
-    "%(asctime)s | %(levelname)s | %(message)s"
+    "%(asctime)s | %(levelname)s | %(message)s | %(filename)s:%(lineno)d"
     )
 
 # Setting format for handlers    
@@ -50,7 +50,7 @@ def fetch_data(latitude, longitude, TIMEOUT=5, RETRY=3):
     
     # Valid Latitude and Longitude checking
     if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
-        logging.error(f"Fetching didn't started | Invalid Coordinates!!!\n")
+        logger.error(f"Fetching didn't started | Invalid Coordinates!!!\n")
         return None
      
     # Fetching data loop with retry logic of fetching failed       
