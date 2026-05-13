@@ -137,7 +137,7 @@ The project uses rotating log files to prevent excessively large log files.
 ## Future Improvements
 
 - JSON export support
-- SQLite database integration
+- PostgreSQL database integration
 - CLI arguments using argparse
 - Async requests
 - Docker support
