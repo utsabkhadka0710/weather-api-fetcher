@@ -50,21 +50,21 @@ def fetch_data(latitude, longitude, TIMEOUT=5, RETRY=3):
     
     # Valid Latitude and Longitude checking
     if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
-        logger.error(f"Fetching didn't started | Invalid Coordinates!!!\n")
+        logger.error(f"Fetching didn't started | Invalid Coordinates!!!")
         return None
      
     # Fetching data loop with retry logic of fetching failed       
     for attempt in range(0,RETRY):
                 
         try:
-            logger.info(f"Fetching Started... | url={url} | service= weather_api | fetching_attempt={attempt+1}\n")
+            logger.info(f"Fetching Started... | url={url} | service= weather_api | fetching_attempt={attempt+1}")
             response = requests.get(url, params=params, timeout=TIMEOUT)
             response.raise_for_status()
-            logger.info(f"Data Fetched Successfully! | status_code={response.status_code} | url={url}\n")
+            logger.info(f"Data Fetched Successfully! | status_code={response.status_code} | url={url}")
             return response.json()
             
         except requests.exceptions.RequestException as e:
-            logger.error(f"API Failure!!! | url={url} | Error={e}\n")
+            logger.error(f"API Failure!!! | url={url} | Error={e}")
         
 #----------------------------------------------
 
@@ -76,11 +76,11 @@ def save_to_csv(data, filename="data/weather_data.csv"):
     Saves the fetched weather data (as .csv) into data/weather_data.csv
     """
     
-    logger.info(f"Attempt to save fetched data at {filename}...\n")
+    logger.info(f"Attempt to save fetched data at {filename}...")
     
     # Checking if valid data is received before saving to .csv
     if not data:
-        logger.error(f"Couldn't save data at {filename} | NO DATA TO SAVE!!!\n")
+        logger.error(f"Couldn't save data at {filename} | NO DATA TO SAVE!!!")
         return
         
     # Saving the valid weather data as .csv 
@@ -90,15 +90,15 @@ def save_to_csv(data, filename="data/weather_data.csv"):
         with open(filename,"a",newline="") as file:
             writer = csv.DictWriter(file, fieldnames=keys)
             if not file_exists:
-                logger.info(f"{filename} doesn't exists!!! | {filename} was created successfully!!!\n")
+                logger.info(f"{filename} doesn't exists!!! | {filename} was created successfully!!!")
                 writer.writeheader()
             writer.writerows(data)
-            logger.info(f"Writing data to {filename}...\n")
-        logger.info(f"Data successfully written to {filename}!!!\n")
-        return
+            logger.info(f"Writing data to {filename}...")
+        return True, filename
         
-    except Exception: 
-        logger.error(f"Failed to save data to {filename}\n")
+    except Exception as e: 
+        logging.exception(f"Error occured: {e}")
+        return False
         
 #-------------------------------------------
 
@@ -115,7 +115,12 @@ def main():
         return
     
     data_to_save = [data["current"]]
-    save_to_csv(data_to_save)
+    saved, filename = save_to_csv(data_to_save)
+    if saved:
+        logger.info(f"Data successfully written to {filename}!!!")
+    else:
+        logger.error(f"Failed to save data to {filename}")
+        
     
 if __name__ == "__main__":
     main()
